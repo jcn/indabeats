@@ -1,0 +1,100 @@
+@font-face {
+  font-family: 'AvantGarde';
+  src: url('../fonts/avant_garde_medium-webfont.eot');
+  src: local('☺'), url('../fonts/avant_garde_medium-webfont.woff') format('woff'), url('../fonts/avant_garde_medium-webfont.ttf') format('truetype'), url('../fonts/avant_garde_medium-webfont.svg#webfont2UAJzVYV') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+body, html {
+  height: 100%;
+  width: 100%;
+}
+
+#content {
+  margin: 30px 70px;
+}
+
+#content * {
+  color: #3a3a3a;
+  font-family: Lucida Grande, Arial sans-serif;
+}
+
+#content a,
+#content a:active,
+#content a:visited { color:#FF5E99; }
+#content a:hover { color:#FF2E66; }
+
+header {
+  margin: 20px 10px 10px 20px;
+}
+  header h1 {
+    font-size: 60px;
+    font-family: AvantGarde;
+    margin: 0 0 5px;
+    display: block;
+    float: left;
+  }
+  header h1 #indaba_logo {
+    display: block;
+    float: left;
+    margin: 0 10px 0 0;
+    background: transparent url('../images/logo.png') no-repeat 0 0;
+    width: 70px;
+    height: 68px;
+  }
+  header #indaba_link {
+    font-family: AvantGarde;
+    margin-left: 10px;
+    font-size: 16px;
+    line-height: 100px;
+  }
+
+#main {
+  clear: left;
+  overflow: hidden;
+}
+
+#sequencer {
+  margin: 10px auto;
+  padding: 5px;
+  float: left;
+  margin-left: 30%;
+  
+  border: 1px solid #CCC;
+  background: #FFF;
+  
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+  #sequencer .column {
+    float: left;
+  }
+  #sequencer .cell {
+    display: block;
+    text-indent: -5000em;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    background: #CCC;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    margin: 4px;
+    border: 1px solid #AAA;
+  }
+  #sequencer .cell:hover {
+    background: #DDD;
+  }
+  #sequencer .cell.active,
+  #sequencer .cell:active {
+    background: #666;
+  }
