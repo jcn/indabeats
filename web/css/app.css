@@ -22,6 +22,12 @@ body, html {
   font-family: Lucida Grande, Arial sans-serif;
 }
 
+#credit {
+  text-align:left;
+  margin-bottom:5px;
+  padding-left:10px;
+}
+
 #content a,
 #content a:active,
 #content a:visited { color:#FF5E99; }

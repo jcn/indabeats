@@ -49,7 +49,7 @@ var IndaBeatsSequencer = {
   
   size_everything: function() {
     WINDOW_WIDTH = $(window).width() - 25;
-    WINDOW_HEIGHT = $(window).height() - 25 - $("header").height();
+    WINDOW_HEIGHT = $(window).height() - 135; //account for credit header
     PADDING = 5;
     
     cell_width = WINDOW_WIDTH / IndaBeatsSettings.gridSize - 1;
@@ -63,7 +63,6 @@ var IndaBeatsSequencer = {
       el.style.width = cell_width - PADDING + "px";
       el.style.height = cell_height - PADDING + "px";
       el.style.margin = "0px 0px "+PADDING+"px 0px";
-      
     });
   },
   

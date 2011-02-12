@@ -108,8 +108,8 @@ html { -webkit-font-smoothing: antialiased; }
 /* Accessible focus treatment: people.opera.com/patrickl/experiments/keyboard/test */
 a:hover, a:active { outline: none; }
 
-a, a:active, a:visited { color:#FF5E99; }
-a:hover { color:#FF9; }
+a, a:active, a:visited { color:#fff; background:#3382b6; text-decoration:none; padding:3px;}
+a:hover { text-decoration:none;}
 
 
 ul { margin-left:30px; }
