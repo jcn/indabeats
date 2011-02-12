@@ -10,6 +10,10 @@ var IndaBeatsSequencer = {
   interval_id: null,
   interval : 300,
   
+  playing: false,
+  
+  key_pressed: { space: false, c: false, r: false },
+  
   init: function( element, options ) {
     
     this.element = $(element);
@@ -43,8 +47,8 @@ var IndaBeatsSequencer = {
     this.element.click(this.clickHandler);
     
     this.size_everything();
-
-    setTimeout(this.start, 1000);
+    
+    $(document).keyup(this.keyUpHandler).keydown(this.keyDownHandler);
   },
   
   size_everything: function() {
@@ -57,14 +61,50 @@ var IndaBeatsSequencer = {
 
     $("#sequencer")[0].style.width = WINDOW_WIDTH + "px";
     $(".column").each(function(index, el) {
-      el.style.width = cell_width + "px";
+      // el.style.width = cell_width + "px";
     });
     $(".cell").each(function(index, el) {
-      el.style.width = cell_width - PADDING + "px";
+      el.style.width = cell_width - (PADDING * 2) + "px";
       el.style.height = cell_height - PADDING + "px";
-      el.style.margin = "0px 0px "+PADDING+"px 0px";
+      el.style.margin = "0px "+PADDING+"px "+PADDING+"px 0px";
     });
   },
+  
+  
+  
+  start: function() {
+    if (IndaBeatsSequencer.interval_id) {
+      clearInterval(IndaBeatsSequencer.interval_id);
+    }
+    IndaBeatsSequencer.interval_id = setInterval(IndaBeatsSequencer.intervalHandler, IndaBeatsSequencer.interval);
+    IndaBeatsSequencer.playing = true;
+  },
+  
+  stop: function() {
+    IndaBeatsSequencer.playing = false;
+    if (IndaBeatsSequencer.interval_id) {
+      clearInterval(IndaBeatsSequencer.interval_id);
+    }
+  },
+  
+  reset: function() {
+    IndaBeatsSequencer.clear();
+    IndaBeatsSequencer.active_column = -1;
+  },
+  
+  clear: function() {
+    $('.cell.active').removeClass('active');
+  },
+  
+  randomize: function() {
+    IndaBeatsSequencer.reset();
+    $('.cell').each(function(index, el){
+      if (Math.floor(Math.random()*5) == 1) {
+        $(el).addClass('active');
+      }
+    });
+  },
+  
   
   clickHandler: function( evt ) {
     
@@ -82,6 +122,36 @@ var IndaBeatsSequencer = {
     
   },
   
+  keyUpHandler: function( evt ) {
+    if (evt.keyCode == 32) {  // if space bar
+      IndaBeatsSequencer.space = false;
+      if (!IndaBeatsSequencer.playing) {
+        IndaBeatsSequencer.start();
+      } else {
+        IndaBeatsSequencer.stop();
+      }
+    } else if (evt.keyCode == 82) { // if r button
+      IndaBeatsSequencer.r = false;
+      IndaBeatsSequencer.randomize();
+    } else if (evt.keyCode == 67) { // if c button
+      IndaBeatsSequencer.c = false;
+      IndaBeatsSequencer.clear();
+    }
+    
+  },
+  
+  keyDownHandler: function( evt ) {
+    
+    if (evt.keyCode == 32) {  // if space bar
+      IndaBeatsSequencer.space = true;
+    } else if (evt.keyCode == 82) { // if r button
+      IndaBeatsSequencer.r = true;
+    } else if (evt.keyCode == 67) { // if c button
+      IndaBeatsSequencer.c = true;
+    }
+    
+  },
+  
   intervalHandler: function() {
     if( IndaBeatsSequencer.active_column >= IndaBeatsSequencer.column_count - 1 ) {
       IndaBeatsSequencer.active_column = 0;
@@ -95,21 +165,6 @@ var IndaBeatsSequencer = {
     $('.column.active .cell.active').each(function(index, el){
       IndaBeatsSequencer.audioplayer.play( $(el).attr('data-row') );
     });
-  },
-  
-  start: function() {
-    if (IndaBeatsSequencer.interval_id) {
-      clearInterval(IndaBeatsSequencer.interval_id);
-    }
-    IndaBeatsSequencer.interval_id = setInterval(IndaBeatsSequencer.intervalHandler, IndaBeatsSequencer.interval);
-  },
-  
-  stop: function() {
-    if (IndaBeatsSequencer.interval_id) {
-      clearInterval(IndaBeatsSequencer.interval_id);
-    }
   }
-  
-  
   
 };
