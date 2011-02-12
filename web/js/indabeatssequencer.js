@@ -1,22 +1,41 @@
 var IndaBeatsSequencer = {
   
   cells: [],
+  row_samples:  [],
   
-  interval : null,
+  active_column: -1,
+  column_count: null,
+  row_count: null,
+  
+  interval_id: null,
+  interval : 300,
   
   init: function( element, options ) {
     
     this.element = $(element);
     this.options = options;
     
-    for (var i = 0; i < this.options.gridSize; i++)
+    this.audioplayer = getFlashMovie('audioplayer');
+    
+    this.column_count = this.row_count = this.options.gridSize;
+    
+    for (var i = 0; i < this.column_count; i++)
     {
       var column = $('<div></div>').addClass('column').attr({ id: 'column_'+i });
       this.cells[i] = [];
-      for (var j = 0; j < this.options.gridSize; j++)
+      for (var j = 0; j < this.row_count; j++)
       {
-        column.append( $('<a>#</a>').addClass('cell').attr({ id: 'cell_'+i+'_'+j }) );
+        column.append( $('<a>#</a>').addClass('cell').attr({ id: 'cell_'+i+'_'+j, 'data-col': i, 'data-row': j }) );
         this.cells[i][j] = false;
+        if (!this.row_samples[j]) {
+          this.row_samples[j] = {
+            'uuid':i+'_'+j,
+            'name':i+'_'+j,
+            'path':'test/audio/output'+j+'.mp3',
+            'channel': j
+          };
+          this.audioplayer.load( this.row_samples[j] );
+        }
       }
       this.element.append(column);
     }
@@ -24,6 +43,8 @@ var IndaBeatsSequencer = {
     this.element.click(this.clickHandler);
     
     this.size_everything();
+
+    setTimeout(this.start, 1000);
   },
   
   size_everything: function() {
@@ -44,7 +65,6 @@ var IndaBeatsSequencer = {
       el.style.margin = "0px 0px "+PADDING+"px 0px";
       
     });
-
   },
   
   clickHandler: function( evt ) {
@@ -58,20 +78,38 @@ var IndaBeatsSequencer = {
       } else {
         cell.addClass('active');
       }
+      console.log( cell.attr('data-col') + ' x ' + cell.attr('data-row') +  ' ' + (cell.is('.active') ? 'active' : 'unactive') );
     }
     
   },
   
+  intervalHandler: function() {
+    if( IndaBeatsSequencer.active_column >= IndaBeatsSequencer.column_count - 1 ) {
+      IndaBeatsSequencer.active_column = 0;
+    } else {
+      IndaBeatsSequencer.active_column++;
+    }
+    
+    $('.column.active').removeClass('active');
+    $('#column_'+IndaBeatsSequencer.active_column).addClass('active');
+    
+    $('.column.active .cell.active').each(function(index, el){
+      IndaBeatsSequencer.audioplayer.play( $(el).attr('data-row') );
+    });
+  },
   
   start: function() {
-    
+    if (IndaBeatsSequencer.interval_id) {
+      clearInterval(IndaBeatsSequencer.interval_id);
+    }
+    IndaBeatsSequencer.interval_id = setInterval(IndaBeatsSequencer.intervalHandler, IndaBeatsSequencer.interval);
   },
   
   stop: function() {
-    
+    if (IndaBeatsSequencer.interval_id) {
+      clearInterval(IndaBeatsSequencer.interval_id);
+    }
   }
-  
-  
   
   
   

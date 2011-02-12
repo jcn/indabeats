@@ -94,3 +94,13 @@ header {
   #sequencer .cell:active {
     background: #DDD;
   }
+  
+  #sequencer .column.active {
+    
+  }
+    #sequencer .column.active .cell {
+      background: #DDD;
+    }
+    #sequencer .column.active .cell.active {
+      background: #444;
+    }
