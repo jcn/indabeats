@@ -99,14 +99,21 @@ header {
   #sequencer .cell.active,
   #sequencer .cell:active {
     background: #DDD;
+    opacity:1;
+    -webkit-box-shadow: 0 0 15px #FFF; 
+    -moz-box-shadow: 0 0 15px #FFF; 
+    box-shadow:0 0 15px #FFF; 
   }
   
   #sequencer .column.active {
     
   }
     #sequencer .column.active .cell {
-      background: #DDD;
+      background: #444;
     }
     #sequencer .column.active .cell.active {
-      background: #444;
+      background: #FFF;
+      -webkit-box-shadow: 0 0 65px #FFF; 
+      -moz-box-shadow: 0 0 65px #FFF; 
+      box-shadow:0 0 65px #FFF; 
     }
