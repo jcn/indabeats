@@ -23,6 +23,28 @@ var IndaBeatsSequencer = {
     
     this.element.click(this.clickHandler);
     
+    this.size_everything();
+  },
+  
+  size_everything: function() {
+    WINDOW_WIDTH = $(window).width() - 25;
+    WINDOW_HEIGHT = $(window).height() - 25 - $("header").height();
+    PADDING = 5;
+    
+    cell_width = WINDOW_WIDTH / IndaBeatsSettings.gridSize - 1;
+    cell_height = WINDOW_HEIGHT / IndaBeatsSettings.gridSize;
+
+    $("#sequencer")[0].style.width = WINDOW_WIDTH + "px";
+    $(".column").each(function(index, el) {
+      el.style.width = cell_width + "px";
+    });
+    $(".cell").each(function(index, el) {
+      el.style.width = cell_width - PADDING + "px";
+      el.style.height = cell_height - PADDING + "px";
+      el.style.margin = "0px 0px "+PADDING+"px 0px";
+      
+    });
+
   },
   
   clickHandler: function( evt ) {

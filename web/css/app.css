@@ -10,6 +10,7 @@
 body, html {
   height: 100%;
   width: 100%;
+  background:url(../images/bg.png) center no-repeat #000;
 }
 
 #content {
@@ -57,13 +58,9 @@ header {
 }
 
 #sequencer {
-  margin: 10px auto;
   padding: 5px;
-  float: left;
-  margin-left: 30%;
+  position:absolute;
   
-  border: 1px solid #CCC;
-  background: #FFF;
   
   border-radius: 4px;
   -moz-border-radius: 4px;
@@ -84,17 +81,16 @@ header {
     height: 30px;
     width: 30px;
     cursor: pointer;
-    background: #CCC;
+    background: #262626;
     border-radius: 4px;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
-    margin: 4px;
-    border: 1px solid #AAA;
+    opacity:.6;
   }
   #sequencer .cell:hover {
-    background: #DDD;
+    background: #666;
   }
   #sequencer .cell.active,
   #sequencer .cell:active {
-    background: #666;
+    background: #DDD;
   }
