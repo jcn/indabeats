@@ -45,6 +45,8 @@ var IndaBeatsSequencer = {
         IndaBeatsSequencer.set_meta_links(data);
       });
     });
+    
+    IndaBeatsSequencer.spin();
   },
   
   set_meta_links: function(data) {
@@ -104,7 +106,7 @@ var IndaBeatsSequencer = {
   },
   
   show_active: function() {
-    s = ""
+    s = "";
     $(".active").each(function(index, el) {
       s += ", \"#"+el.id+"\"";
     });
@@ -149,6 +151,7 @@ var IndaBeatsSequencer = {
   
   init_samples: function(samples) {
     IndaBeatsSequencer.init_grid(samples);
+    IndaBeatsSequencer.stop_spin();
   },
 
   size_everything: function() {
