@@ -20,6 +20,10 @@ var IndaBeatsSequencer = {
   
   mouse_down: false,
   
+  spinning: false,
+  spin_column: 0,
+  spinner_timeout: null,
+
   init: function( element, options ) {
     
     this.initialized = true;
@@ -62,6 +66,48 @@ var IndaBeatsSequencer = {
       .error(function() {
         setTimeout(function() { IndaBeatsSequencer.poll_for_samples(url); }, 4000);
       });
+  },
+  
+  spin: function() {
+
+    // build "load"
+    if (this.spinning == false) {
+      this.clear();
+      $("#cell_1_5, #cell_1_6, #cell_1_7, #cell_1_8, #cell_1_9, #cell_2_9, #cell_4_5, #cell_4_6, #cell_4_7, #cell_4_8, #cell_4_9, #cell_5_5, #cell_5_9, #cell_6_5, #cell_6_6, #cell_6_7, #cell_6_8, #cell_6_9, #cell_8_5, #cell_8_6, #cell_8_7, #cell_8_8, #cell_8_9, #cell_9_5, #cell_9_7, #cell_10_5, #cell_10_6, #cell_10_7, #cell_10_8, #cell_10_9, #cell_12_5, #cell_12_6, #cell_12_7, #cell_12_8, #cell_12_9, #cell_13_5, #cell_13_9, #cell_14_6, #cell_14_7, #cell_14_8").addClass("active");  
+      this.spinning = true;
+    }
+
+    // flip this column
+    $("#column_"+this.spin_column).children().each(function(index, el) {
+      if ( $(el).hasClass("active") ) {
+        $(el).removeClass("active");
+      }
+      else {
+        $(el).addClass("active");
+      }
+    });
+    
+    // wrap
+    this.spin_column += 1;
+    if (this.spin_column > 15){ this.spin_column = 0; }
+    
+    if (this.spinning == true) {
+      this.spinner_timeout = setTimeout(function(){IndaBeatsSequencer.spin();}, 50);
+    };
+  },
+  
+  stop_spin: function(){
+    clearTimeout(this.spinner_timeout);
+    this.spinning = false;
+    this.clear();
+  },
+  
+  show_active: function() {
+    s = ""
+    $(".active").each(function(index, el) {
+      s += ", \"#"+el.id+"\"";
+    });
+    console.log(s);
   },
 
   init_grid: function(samples) {
