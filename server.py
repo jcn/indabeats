@@ -28,7 +28,7 @@ def index():
 @route('/request_samples')
 def request_song():
   hash = server.importer.main(samples_dir())
-  return { 'poll_url': '/samples/' + hash }
+  return { 'poll_url': '/samples/' + hash, 'source_id': hash }
 
 @route('/samples/:id')
 def samples(id):
@@ -37,6 +37,10 @@ def samples(id):
     return open(os.path.join(samples_dir(), id, 'processed')).read()
   except:
     abort(404)
+
+@route('/samples/:id/:path')
+def sample(id, path):
+  return static_file(path, root=os.path.join(samples_dir(), id))
 
 @route('/:path#.+#')
 def static(path):

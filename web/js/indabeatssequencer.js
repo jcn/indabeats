@@ -14,15 +14,32 @@ var IndaBeatsSequencer = {
   
   key_pressed: { space: false, c: false, r: false },
   
+  handlers_set: false,
+
   init: function( element, options ) {
     
     this.element = $(element);
     this.options = options;
-    
+
     this.audioplayer = getFlashMovie('audioplayer');
-    
-    this.column_count = this.row_count = this.options.gridSize;
-    
+    $.get('/request_samples', function(data) {
+      IndaBeatsSequencer.source_id = data.source_id;
+      IndaBeatsSequencer.poll_for_samples(data.poll_url);
+    });
+  },
+  
+  poll_for_samples: function(url) {
+    $.get(url)
+      .success(function(data) { IndaBeatsSequencer.init_grid(data); })
+      .error(function() {
+        setTimeout(function() { IndaBeatsSequencer.poll_for_samples(url); }, 4000);
+      });
+  },
+
+  init_grid: function(samples) {
+    this.element.empty();
+    this.column_count = this.row_count = samples.length;
+
     for (var i = 0; i < this.column_count; i++)
     {
       var column = $('<div></div>').addClass('column').attr({ id: 'column_'+i });
@@ -35,7 +52,7 @@ var IndaBeatsSequencer = {
           this.row_samples[j] = {
             'uuid':i+'_'+j,
             'name':i+'_'+j,
-            'path':'test/audio/output'+j+'.mp3',
+            'path':'samples/' + IndaBeatsSequencer.source_id + '/' + samples[j],
             'channel': j
           };
           this.audioplayer.load( this.row_samples[j] );
@@ -43,14 +60,15 @@ var IndaBeatsSequencer = {
       }
       this.element.append(column);
     }
-    
-    this.element.click(this.clickHandler);
-    
+   
+    if(!this.handlers_set){
+      this.handlers_set = true;
+      this.element.click(this.clickHandler);
+      $(document).keyup(this.keyUpHandler).keydown(this.keyDownHandler);
+    }
     this.size_everything();
-    
-    $(document).keyup(this.keyUpHandler).keydown(this.keyDownHandler);
   },
-  
+
   size_everything: function() {
     WINDOW_WIDTH = $(window).width() - 25;
     WINDOW_HEIGHT = $(window).height() - 135; //account for credit header
