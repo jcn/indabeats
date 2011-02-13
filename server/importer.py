@@ -10,6 +10,7 @@ import tempfile
 import uuid
 import hashlib
 import os
+import subprocess
 
 api_key = "4r9FS5iEcrS7tjWCZ0El"
 song_url = "http://api.indabamusic.com/1/media/random_song?format=json&oauth_consumer_key=" + api_key
@@ -63,11 +64,7 @@ def main(my_sample_dir=None):
 
     write_metadata(song_json, md5)
 
-    if os.fork() == 0:
-        return md5
-    
-    else:
-        # run the processor
-        path = os.path.join(samples_dir, md5)
-        beats.main(source_filename(md5), os.path.join(path, "output"))
-        return
+    path = os.path.join(samples_dir, md5)
+    subprocess.Popen(["/usr/bin/python", os.path.abspath(os.path.join('server', "beats.py")), source_filename(md5), os.path.join(path, 'output')])
+
+    return md5
