@@ -80,11 +80,11 @@ body, html {
   }
   #sequencer .cell.active,
   #sequencer .cell:active {
-    background: #DDD;
+    background: #666;
     opacity:1;
-    -webkit-box-shadow: 0 0 15px #FFF; 
-    -moz-box-shadow: 0 0 15px #FFF; 
-    box-shadow:0 0 15px #FFF; 
+    -webkit-box-shadow: 0 0 15px #666; 
+    -moz-box-shadow: 0 0 15px #666; 
+    box-shadow:0 0 15px #666; 
   }
   
   #sequencer .column.active {
