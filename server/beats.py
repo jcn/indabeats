@@ -6,6 +6,7 @@ beats.py
 import echonest.audio as audio
 from echonest.selection import have_pitch_max,have_pitches_max
 import random
+import os
 
 usage = """
 Usage: 
@@ -25,6 +26,8 @@ def main(input_filename, output_prefix):
         collect.append(beats[index])
         out = audio.getpieces(audiofile, collect)
         out.encode(output_prefix + str(x))
+
+    open(os.path.join(os.path.dirname(output_prefix), "processed"), 'w').close()
 
 if __name__ == '__main__':
     import sys
