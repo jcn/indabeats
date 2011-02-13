@@ -22,7 +22,8 @@ var IndaBeatsSequencer = {
     this.options = options;
 
     this.audioplayer = getFlashMovie('audioplayer');
-    $.get('/request_samples', function(data) {
+
+    $.get('/request_samples?id=' + $.urlParam('id'), function(data) {
       IndaBeatsSequencer.source_id = data.source_id;
       IndaBeatsSequencer.poll_for_samples(data.poll_url);
     });

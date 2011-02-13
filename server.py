@@ -27,7 +27,14 @@ def index():
 
 @route('/request_samples')
 def request_song():
-  hash = server.importer.main(samples_dir())
+  hash = request.GET.get('id')
+
+  if ((hash == None) or (hash.strip() == '')):
+    hash = server.importer.main(samples_dir())
+
+  else:
+    hash = request.GET.get('id')
+
   return { 'poll_url': '/samples/' + hash, 'source_id': hash }
 
 @route('/samples/:id')
