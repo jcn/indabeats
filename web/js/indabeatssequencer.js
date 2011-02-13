@@ -23,12 +23,31 @@ var IndaBeatsSequencer = {
 
     this.audioplayer = getFlashMovie('audioplayer');
 
+    this.set_meta_links();
+
     $.get('/request_samples?id=' + $.urlParam('id'), function(data) {
       IndaBeatsSequencer.source_id = data.source_id;
       IndaBeatsSequencer.poll_for_samples(data.poll_url);
+      $.get(data.metadata_url, function(data) {
+        IndaBeatsSequencer.set_meta_links(data);
+      });
     });
   },
   
+  set_meta_links: function(data) {
+    if(!data) {
+      data = {
+        song: { 
+          link: '#',
+          name: 'Loading...',
+          owner: { url: '#', name: 'Loading...' }
+        }
+      }
+    }
+    $('#song_link').attr('href', data.song.link).html(data.song.name);
+    $('#person_link').attr('href', data.song.owner.url).html(data.song.owner.name);
+  },
+
   poll_for_samples: function(url) {
     $.get(url)
       .success(function(data) { IndaBeatsSequencer.init_grid(data); })
@@ -155,9 +174,9 @@ var IndaBeatsSequencer = {
     } else if (evt.keyCode == 67) { // if c button
       IndaBeatsSequencer.c = false;
       IndaBeatsSequencer.clear();
-    } else if (evt.keyCode == 38) { // if l button
+    } else if (evt.keyCode == 76) { // if l button
       IndaBeatsSequencer.init('#sequencer', IndaBeatsSettings);
-    }
+    } else { console.log(evt.keyCode); }
     
   },
   
