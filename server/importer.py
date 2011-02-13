@@ -2,6 +2,8 @@
 importer.py
 """
 
+import beats
+
 import urllib
 import simplejson as json
 import tempfile
@@ -20,6 +22,8 @@ def fetch_song_json():
 
     return content
 
+def source_filename(md5):
+    return os.path.join(samples_dir, md5, md5 + ".mp3")
 
 def download_song(url):
     h = urllib.urlopen(url)
@@ -31,7 +35,7 @@ def download_song(url):
 
     os.makedirs(path)
     
-    file = open(os.path.join(path, md5), "w")
+    file = open(source_filename(md5), "w")
     file.write(song)
     file.close()
 
@@ -56,4 +60,11 @@ def main():
 
     write_metadata(song_json, md5)
 
-    return md5
+    if os.fork() == 0:
+        return md5
+    
+    else:
+        # run the processor
+        path = os.path.join(samples_dir, md5)
+        beats.main(source_filename(md5), os.path.join(path, "output"))
+        return
