@@ -35,7 +35,7 @@ def request_song():
   else:
     hash = request.GET.get('id')
 
-  return { 'poll_url': '/samples/' + hash, 'source_id': hash }
+  return { 'poll_url': '/samples/' + hash, 'source_id': hash, 'metadata_url': '/samples/' + hash + '/metadata.json' }
 
 @route('/samples/:id')
 def samples(id):
