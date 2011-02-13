@@ -155,6 +155,8 @@ var IndaBeatsSequencer = {
     } else if (evt.keyCode == 67) { // if c button
       IndaBeatsSequencer.c = false;
       IndaBeatsSequencer.clear();
+    } else if (evt.keyCode == 38) { // if l button
+      IndaBeatsSequencer.init('#sequencer', IndaBeatsSettings);
     }
     
   },
