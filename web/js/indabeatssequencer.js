@@ -19,6 +19,7 @@ var IndaBeatsSequencer = {
   handlers_set: false,
   
   mouse_down: false,
+  click_target: null,
   
   spinning: false,
   spin_column: 0,
@@ -138,7 +139,6 @@ var IndaBeatsSequencer = {
    
     if(!this.handlers_set){
       this.handlers_set = true;
-      this.element.click(this.clickHandler);
       $(document).keyup(this.keyUpHandler).keydown(this.keyDownHandler);
       $(window).resize(this.size_everything);
       $(document).mousedown(this.mouseDownHandler).mouseover(this.mouseOverHandler).mouseup(this.mouseUpHandler);
@@ -208,6 +208,11 @@ var IndaBeatsSequencer = {
   
   clickHandler: function( evt ) {
     
+    if (IndaBeatsSequencer.click_target != evt.currentTarget) {
+      IndaBeatsSequencer.click_target = null;
+      return;
+    }
+    
     var cell = $(evt.target).is('.cell') ? $(evt.target) : ( $(evt.target).parents('.cell')[0] ? $(evt.target).parents('.cell')[0] : null );
     
     if (cell)
@@ -220,6 +225,10 @@ var IndaBeatsSequencer = {
       console.log( cell.attr('id') +  ' ' + (cell.is('.active') ? 'active' : 'unactive') );
     }
     
+  },
+  
+  setTargetHandler: function(evt) {
+    IndaBeatsSequencer.click_target = evt.target;
   },
   
   keyUpHandler: function( evt ) {
@@ -271,6 +280,9 @@ var IndaBeatsSequencer = {
   
   mouseDownHandler: function(evt) {
     IndaBeatsSequencer.mouse_down = true;
+    if ($(evt.target).is('.cell')) {
+      IndaBeatsSequencer.click_target = $(evt.target);
+    }
   },
   
   mouseOverHandler: function(evt) {
@@ -289,6 +301,16 @@ var IndaBeatsSequencer = {
   
   mouseUpHandler: function(evt) {
     IndaBeatsSequencer.mouse_down = false;
+    if ($(evt.target).is('.cell')) {
+      var cell = $(evt.target);
+      if (cell.is('.active')) {
+        cell.removeClass('active');
+      } else {
+        cell.addClass('active');
+      }
+      cell = null;
+      IndaBeatsSequencer.click_target = null;
+    }
   }
   
 };
