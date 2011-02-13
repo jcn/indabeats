@@ -46,7 +46,7 @@ var IndaBeatsSequencer = {
       this.cells[i] = [];
       for (var j = 0; j < this.row_count; j++)
       {
-        column.append( $('<a>#</a>').addClass('cell').attr({ id: 'cell_'+i+'_'+j, 'data-col': i, 'data-row': j }) );
+        column.append( $('<a>#</a>').addClass('cell').attr({ id: 'cell_'+i+'_'+j, 'data-channel': j }) );
         this.cells[i][j] = false;
         if (!this.row_samples[j]) {
           this.row_samples[j] = {
@@ -135,7 +135,7 @@ var IndaBeatsSequencer = {
       } else {
         cell.addClass('active');
       }
-      console.log( cell.attr('data-col') + ' x ' + cell.attr('data-row') +  ' ' + (cell.is('.active') ? 'active' : 'unactive') );
+      console.log( cell.attr('id') +  ' ' + (cell.is('.active') ? 'active' : 'unactive') );
     }
     
   },
@@ -181,7 +181,7 @@ var IndaBeatsSequencer = {
     $('#column_'+IndaBeatsSequencer.active_column).addClass('active');
     
     $('.column.active .cell.active').each(function(index, el){
-      IndaBeatsSequencer.audioplayer.play( $(el).attr('data-row') );
+      IndaBeatsSequencer.audioplayer.play( $(el).attr('data-channel') );
     });
   }
   
