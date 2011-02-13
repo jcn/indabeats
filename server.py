@@ -15,9 +15,28 @@ server.bottle.debug(True)
 def web_root():
   return os.path.abspath('web')
 
+def server_root():
+  return os.path.abspath('server')
+
+def samples_dir():
+  return os.path.abspath('samples')
+
 @route('/')
 def index():
   return static_file('index.html', root=web_root())
+
+@route('/request_samples')
+def request_song():
+  hash = server.importer.main(samples_dir())
+  return { 'poll_url': '/samples/' + hash }
+
+@route('/samples/:id')
+def samples(id):
+  try:
+    response.content_type = 'application/json'
+    return open(os.path.join(samples_dir(), id, 'processed')).read()
+  except:
+    abort(404)
 
 @route('/:path#.+#')
 def static(path):

@@ -13,7 +13,7 @@ import os
 
 api_key = "4r9FS5iEcrS7tjWCZ0El"
 song_url = "http://api.indabamusic.com/1/media/random_song?format=json&oauth_consumer_key=" + api_key
-samples_dir = "samples"
+samples_dir = 'samples'
 
 def fetch_song_json():
     h = urllib.urlopen(song_url)
@@ -51,7 +51,10 @@ def write_metadata(song_json, md5):
     
     return True
 
-def main():
+def main(my_sample_dir=None):
+    if my_sample_dir:
+      sample_dir = my_sample_dir
+
     song_json = fetch_song_json()
 
     song_dict = json.loads(song_json)
