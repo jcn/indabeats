@@ -103,6 +103,7 @@ var IndaBeatsSequencer = {
     clearTimeout(this.spinner_timeout);
     this.spinning = false;
     this.clear();
+    this.spin_column = 0;
   },
   
   show_active: function() {
