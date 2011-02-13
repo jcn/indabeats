@@ -24,7 +24,7 @@ def main(input_filename, output_prefix):
 
     for x in range(16):
         collect = audio.AudioQuantumList()
-        index = random.randint(0, len(beats))
+        index = random.randint(0, len(beats) - 1)
         collect.append(beats[index])
         out = audio.getpieces(audiofile, collect)
         samples.append(os.path.basename(out.encode(output_prefix + str(x))))
