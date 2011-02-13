@@ -16,11 +16,7 @@ body, html {
 
 #content {
   margin: 30px 70px;
-}
-
-#content * {
   color: #3a3a3a;
-  font-family: Lucida Grande, Arial sans-serif;
 }
 
 #credit {
@@ -43,34 +39,10 @@ body, html {
 #content a:visited { color:#FF5E99; }
 #content a:hover { color:#FF2E66; }
 
-header {
-  margin: 20px 10px 10px 20px;
-}
-  header h1 {
-    font-size: 60px;
-    font-family: AvantGarde;
-    margin: 0 0 5px;
-    display: block;
-    float: left;
-  }
-  header h1 #indaba_logo {
-    display: block;
-    float: left;
-    margin: 0 10px 0 0;
-    background: transparent url('../images/logo.png') no-repeat 0 0;
-    width: 70px;
-    height: 68px;
-  }
-  header #indaba_link {
-    font-family: AvantGarde;
-    margin-left: 10px;
-    font-size: 16px;
-    line-height: 100px;
-  }
-
 #main {
   clear: left;
   overflow: hidden;
+  font-family: AvantGarde;
 }
 
 #sequencer {

@@ -1,10 +1,12 @@
 var IndaBeatsSequencer = {
   
+  initialized: false,
+  
   cells: [],
   row_samples:  [],
   
   active_column: -1,
-  column_count: null,
+  column_count: 16,
   row_count: null,
   
   interval_id: null,
@@ -18,13 +20,17 @@ var IndaBeatsSequencer = {
 
   init: function( element, options ) {
     
+    this.initialized = true;
+    
     this.element = $(element);
     this.options = options;
-
+    
+    this.init_grid();
+    
     this.audioplayer = getFlashMovie('audioplayer');
-
+    
     this.set_meta_links();
-
+    
     $.get('/request_samples?id=' + $.urlParam('id'), function(data) {
       IndaBeatsSequencer.source_id = data.source_id;
       IndaBeatsSequencer.poll_for_samples(data.poll_url);
@@ -42,7 +48,7 @@ var IndaBeatsSequencer = {
           name: 'Loading...',
           owner: { url: '#', name: 'Loading...' }
         }
-      }
+      };
     }
     $('#song_link').attr('href', data.song.link).html(data.song.name);
     $('#person_link').attr('href', data.song.owner.url).html(data.song.owner.name);
@@ -50,7 +56,7 @@ var IndaBeatsSequencer = {
 
   poll_for_samples: function(url) {
     $.get(url)
-      .success(function(data) { IndaBeatsSequencer.init_grid(data); })
+      .success(function(data) { IndaBeatsSequencer.init_samples(data); })
       .error(function() {
         setTimeout(function() { IndaBeatsSequencer.poll_for_samples(url); }, 4000);
       });
@@ -58,8 +64,9 @@ var IndaBeatsSequencer = {
 
   init_grid: function(samples) {
     this.element.empty();
-    this.column_count = this.row_count = samples.length;
-
+    
+    this.row_count = (samples ? samples.length : 16);
+    
     for (var i = 0; i < this.column_count; i++)
     {
       var column = $('<div></div>').addClass('column').attr({ id: 'column_'+i });
@@ -68,11 +75,11 @@ var IndaBeatsSequencer = {
       {
         column.append( $('<a>#</a>').addClass('cell').attr({ id: 'cell_'+i+'_'+j, 'data-channel': j }) );
         this.cells[i][j] = false;
-        if (!this.row_samples[j]) {
+        if (samples) {
           this.row_samples[j] = {
             'uuid':i+'_'+j,
             'name':i+'_'+j,
-            'path':'samples/' + IndaBeatsSequencer.source_id + '/' + samples[j],
+            'path':'samples/' + this.source_id + '/' + samples[j],
             'channel': j
           };
           this.audioplayer.load( this.row_samples[j] );
@@ -85,8 +92,14 @@ var IndaBeatsSequencer = {
       this.handlers_set = true;
       this.element.click(this.clickHandler);
       $(document).keyup(this.keyUpHandler).keydown(this.keyDownHandler);
+      $(window).resize(this.size_everything);
     }
+    
     this.size_everything();
+  },
+  
+  init_samples: function(samples) {
+    IndaBeatsSequencer.init_grid(samples);
   },
 
   size_everything: function() {
