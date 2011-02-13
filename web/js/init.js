@@ -1,5 +1,6 @@
 var IndaBeatsSettings = {
-  gridSize: 16
+  gridSize: 16,
+  source_id: $.urlParam('id')
 };
 
 var AUDIOPLAYER_READY = AUDIOPLAYER_READY && getFlashMovie('audioplayer').ready();

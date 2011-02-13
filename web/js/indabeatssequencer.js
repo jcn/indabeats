@@ -30,15 +30,25 @@ var IndaBeatsSequencer = {
     this.initialized = true;
     
     this.element = $(element);
+<<<<<<< HEAD
     this.options = options;
     
     this.init_grid();
     
+=======
+    this.options = options || { };
+
+>>>>>>> hitting the 'l' key actually loads a new song (doesn't change the url yet).
     this.audioplayer = getFlashMovie('audioplayer');
     
     this.set_meta_links();
+<<<<<<< HEAD
     
     $.get('/request_samples?id=' + $.urlParam('id'), function(data) {
+=======
+
+    $.get('/request_samples?id=' + (options.source_id || ''), function(data) {
+>>>>>>> hitting the 'l' key actually loads a new song (doesn't change the url yet).
       IndaBeatsSequencer.source_id = data.source_id;
       IndaBeatsSequencer.poll_for_samples(data.poll_url);
       $.get(data.metadata_url, function(data) {
@@ -250,7 +260,7 @@ var IndaBeatsSequencer = {
       IndaBeatsSequencer.c = false;
       IndaBeatsSequencer.clear();
     } else if (evt.keyCode == 76) { // if l button
-      IndaBeatsSequencer.init('#sequencer', IndaBeatsSettings);
+      IndaBeatsSequencer.init('#sequencer', { });
     } else { console.log(evt.keyCode); }
     
   },
