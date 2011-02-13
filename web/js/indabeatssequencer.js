@@ -17,7 +17,9 @@ var IndaBeatsSequencer = {
   key_pressed: { space: false, c: false, r: false },
   
   handlers_set: false,
-
+  
+  mouse_down: false,
+  
   init: function( element, options ) {
     
     this.initialized = true;
@@ -93,6 +95,7 @@ var IndaBeatsSequencer = {
       this.element.click(this.clickHandler);
       $(document).keyup(this.keyUpHandler).keydown(this.keyDownHandler);
       $(window).resize(this.size_everything);
+      $(document).mousedown(this.mouseDownHandler).mouseover(this.mouseOverHandler).mouseup(this.mouseUpHandler);
     }
     
     this.size_everything();
@@ -218,6 +221,28 @@ var IndaBeatsSequencer = {
     $('.column.active .cell.active').each(function(index, el){
       IndaBeatsSequencer.audioplayer.play( $(el).attr('data-channel') );
     });
+  },
+  
+  mouseDownHandler: function(evt) {
+    IndaBeatsSequencer.mouse_down = true;
+  },
+  
+  mouseOverHandler: function(evt) {
+    if (IndaBeatsSequencer.mouse_down) {
+      if ($(evt.target).is('.cell')) {
+        var cell = $(evt.target);
+        if (cell.is('.active')) {
+          cell.removeClass('active');
+        } else {
+          cell.addClass('active');
+        }
+        cell = null;
+      }
+    }
+  },
+  
+  mouseUpHandler: function(evt) {
+    IndaBeatsSequencer.mouse_down = false;
   }
   
 };
